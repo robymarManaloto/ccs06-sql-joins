@@ -121,7 +121,7 @@ class Employee
                     hire_date,
                     FORMAT(s.salary, "C") salary
                 FROM employees e
-                INNER JOIN dept_emp demp ON demp.emp_no=e.emp_no
+                INNER JOIN dept_emp demp ON (demp.emp_no=e.emp_no AND demp.to_date = "9999-01-01") 
                 INNER JOIN (
                     SELECT emp_no, MAX(to_date) to_date
                     FROM titles
@@ -134,7 +134,7 @@ class Employee
                     GROUP BY emp_no
                 ) smax ON smax.emp_no=e.emp_no
                 INNER JOIN salaries s ON s.emp_no=e.emp_no AND s.to_date=smax.to_date
-                WHERE demp.dept_no=:id
+                WHERE demp.dept_no=:id 
                     ';
 
             $statement = $conn->prepare($sql);
